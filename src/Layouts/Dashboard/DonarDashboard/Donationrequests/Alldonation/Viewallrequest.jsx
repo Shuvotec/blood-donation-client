@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { AuthContext } from '../../../../providers/AuthProvider';
+import { AuthContext } from '../../../../../providers/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 
-const DonorDashboardHome = () => {
+const Viewallrequest = () => {
   const { user } = useContext(AuthContext);
   const email = user?.email;
 
+  const [showAll, setShowAll] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteRequestId, setDeleteRequestId] = useState(null);
 
@@ -23,11 +24,9 @@ const DonorDashboardHome = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  // Get latest 3 donation requests
-  const recentRequests = donationRequests
-    .slice()           // create a copy
-    .reverse()         // newest first
-    .slice(0, 3);      // take latest 3
+  const displayedRequests = showAll
+    ? donationRequests.slice().reverse()
+    : donationRequests.slice(-3).reverse();
 
   const handleStatusChange = async (requestId, newStatus) => {
     try {
@@ -36,8 +35,9 @@ const DonorDashboardHome = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus }),
       });
+
       if (!res.ok) throw new Error('Failed to update donation status');
-      refetch();
+      refetch(); // Refresh data
     } catch (error) {
       console.error('Error updating status:', error);
     }
@@ -48,8 +48,9 @@ const DonorDashboardHome = () => {
       const res = await fetch(`http://localhost:5000/createdonation/${requestId}`, {
         method: 'DELETE',
       });
+
       if (!res.ok) throw new Error('Failed to delete donation request');
-      refetch();
+      refetch(); // Refresh after deletion
     } catch (error) {
       console.error('Error deleting donation request:', error);
     } finally {
@@ -61,22 +62,22 @@ const DonorDashboardHome = () => {
     <div className="md:mb-20">
       <h2 className="text-xl font-semibold mb-4">Welcome, {user?.name}</h2>
 
-      {recentRequests.length > 0 && (
+      {donationRequests.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table">
             <thead>
               <tr>
                 <th>Recipient Name</th>
-                <th>Location</th>
-                <th>Date</th>
-                <th>Time</th>
+                <th>Recipient Location</th>
+                <th>Donation Date</th>
+                <th>Donation Time</th>
                 <th>Blood Group</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {recentRequests.map((request) => (
+              {displayedRequests.map((request) => (
                 <tr key={request._id}>
                   <td>{request.recipientName}</td>
                   <td>{`${request.district}, ${request.upazila}`}</td>
@@ -84,7 +85,7 @@ const DonorDashboardHome = () => {
                   <td>{request.donationTime}</td>
                   <td>{request.bloodGroup}</td>
                   <td>{request.status}</td>
-                  <td>
+                  <td className="space-x-1">
                     {request.status === 'inprogress' && (
                       <>
                         <button
@@ -107,8 +108,8 @@ const DonorDashboardHome = () => {
                     <button
                       className="btn btn-ghost btn-xs"
                       onClick={() => {
-                        setShowDeleteModal(true);
                         setDeleteRequestId(request._id);
+                        setShowDeleteModal(true);
                       }}
                     >
                       Delete
@@ -121,17 +122,26 @@ const DonorDashboardHome = () => {
               ))}
             </tbody>
           </table>
+
+          {/* Toggle View All / Less */}
+          {donationRequests.length > 3 && (
+            <div className="mt-4 text-center">
+              <button
+                className="btn btn-sm btn-primary"
+                onClick={() => setShowAll(!showAll)}
+              >
+                {showAll ? "Show Less" : "View All Requests"}
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="text-center py-4">
+          No donation requests found.
         </div>
       )}
 
-      {/* View All Button */}
-      {donationRequests.length > 3 && (
-        <Link to="my-donationsall">
-          <button className="btn btn-primary mt-4">View My All Requests</button>
-        </Link>
-      )}
-
-      {/* Optional: Modal placeholder */}
+      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded shadow-md">
@@ -157,4 +167,4 @@ const DonorDashboardHome = () => {
   );
 };
 
-export default DonorDashboardHome;
+export default Viewallrequest;

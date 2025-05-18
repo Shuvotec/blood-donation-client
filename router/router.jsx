@@ -4,13 +4,13 @@ import Home from "../src/Pages/Home/Home";
 import Login from "../src/Pages/Login/Login/Login";
 import Register from "../src/Pages/Login/Register/Register";
 import PrivateRoute from "./PrivateRoute";
-import CkR from "../src/Pages/CkR";
 import EditProfile from "../src/Pages/Edit/EditProfile";
 import DashboardLayout from "../src/Layouts/Dashboard/DashboardLayout";
-import SideerBar from "../src/Layouts/Dashboard/SideerBar";
 import DonorDashboardHome from "../src/Layouts/Dashboard/DonarDashboard/DonorDashboardHome/DonorDashboardHome";
 import CreateDonationRequest from "../src/Layouts/Dashboard/DonarDashboard/CreateDonationRequest/CreateDonationRequest";
 import Mydonationrequests from "../src/Layouts/Dashboard/DonarDashboard/Donationrequests/Mydonationrequests";
+import Viewallrequest from "../src/Layouts/Dashboard/DonarDashboard/Donationrequests/Alldonation/Viewallrequest";
+import Allsearch from "../src/Pages/Allsearch/Allsearch";
 
 
 
@@ -25,8 +25,8 @@ export const router = createBrowserRouter([
           element: <Home></Home>,
         },
         {
-          path: "/p",
-          element: <CkR></CkR>
+          path: "allsearch",
+          element: <Allsearch></Allsearch>
         
         },
       
@@ -66,8 +66,8 @@ export const router = createBrowserRouter([
           element: <PrivateRoute><EditProfile></EditProfile></PrivateRoute>
         },
         {
-          path: "b",
-          element: <h2>Hi i am shuvo</h2>,
+          path: "my-donationsall",
+          element: <PrivateRoute><Viewallrequest></Viewallrequest></PrivateRoute>,
         
         },
         {
