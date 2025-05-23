@@ -16,6 +16,7 @@ import Donationdetails from "../src/Layouts/Dashboard/DonarDashboard/Donationdet
 import Adminhome from "../src/Layouts/Admin/Adminhome/Adminhome";
 import Tests from "../src/Shared/Tests";
 import AllUser from "../src/Layouts/Admin/AllUser/AllUser";
+import MyDonationreq from "../src/Layouts/Admin/MyDonationreq/MyDonationreq";
 
 
 
@@ -91,6 +92,11 @@ export const router = createBrowserRouter([
         path: "userall",
         element: <PrivateRoute><AllUser></AllUser></PrivateRoute>
       },
+      {
+        path: "admin/my-donation-requests-page",
+        element: <PrivateRoute><MyDonationreq></MyDonationreq></PrivateRoute>
+      },
+
       {
         path: "t",
         element: <PrivateRoute><Tests></Tests></PrivateRoute>

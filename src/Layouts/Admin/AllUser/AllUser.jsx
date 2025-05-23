@@ -1,181 +1,424 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import {
+  FaLock,
+  FaUnlock,
+  FaUserShield,
+  FaUserCheck,
+  FaUserAlt,
+  FaInfoCircle,
+} from "react-icons/fa";
 
+const MySwal = withReactContent(Swal);
 const PAGE_SIZE = 5;
 
 const AllUser = () => {
   const [data, setData] = useState([]);
-  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterStatus, setFilterStatus] = useState("all");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [updatingUserId, setUpdatingUserId] = useState(null); // For showing loading on a user row
+  const [error, setError] = useState(null);
+  const [updatingUserId, setUpdatingUserId] = useState(null);
 
-  // Fetch user data
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:5000/userall')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch users');
+    setError(null);
+    fetch("http://localhost:5000/userall")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch users");
         return res.json();
       })
-      .then(users => {
+      .then((users) => {
         setData(users);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setError("Failed to load users. Please refresh.");
+        setLoading(false);
+      });
   }, []);
 
-  // Filter users by status
-  const filteredUsers = data.filter(user => {
-    if (filterStatus === 'all') return true;
-    return user.status === filterStatus;
+  const filteredUsers = data.filter((user) => {
+    const status = (user.status || "").toLowerCase();
+    const role = (user.role || "").toLowerCase();
+
+    if (filterStatus === "all") return true;
+
+    if (filterStatus === "active-volunteer") {
+      return status === "active" && role === "volunteer";
+    }
+
+    return status === filterStatus;
   });
 
-  // Pagination
   const totalPages = Math.ceil(filteredUsers.length / PAGE_SIZE);
-  const paginatedUsers = filteredUsers.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const paginatedUsers = filteredUsers.slice(
+    (page - 1) * PAGE_SIZE,
+    page * PAGE_SIZE
+  );
 
-  // Update user on backend and locally
-  const updateUser = async (userId, updates) => {
+  // Count users by role for display
+  const roleCounts = data.reduce((acc, user) => {
+    const role = (user.role || "unknown").toLowerCase();
+    acc[role] = (acc[role] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Update user function with SweetAlert confirmations
+  const updateUser = async (userId, updates, actionLabel) => {
+    const confirmResult = await MySwal.fire({
+      title: `Are you sure you want to ${actionLabel}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, proceed",
+      cancelButtonText: "Cancel",
+      reverseButtons: true,
+    });
+
+    if (!confirmResult.isConfirmed) return;
+
     try {
       setUpdatingUserId(userId);
-      const res = await fetch(`http://localhost:5000/user/${userId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+
+      let endpoint = `http://localhost:5000/userall/${userId}`;
+      if (updates.role === "admin") {
+        endpoint = `http://localhost:5000/users/admin/${userId}`;
+      }
+      // Add other role endpoints if needed
+
+      const res = await fetch(endpoint, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates),
       });
-      if (!res.ok) throw new Error('Failed to update user');
-
+      if (!res.ok) throw new Error("Update failed");
       const updatedUser = await res.json();
 
-      setData(prev => prev.map(u => (u._id === userId ? updatedUser : u)));
-      alert('User updated successfully!');
-    } catch (error) {
-      alert('Error updating user. Please try again.');
+      setData((prev) =>
+        prev.map((u) => (u._id === userId ? updatedUser : u))
+      );
+
+      MySwal.fire({
+        icon: "success",
+        title: `${actionLabel} successful!`,
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch {
+      MySwal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error updating user, please try again.",
+      });
     } finally {
       setUpdatingUserId(null);
     }
   };
 
+  // Show user details modal with custom design
+  const showUserDetails = (user) => {
+    MySwal.fire({
+      title: <strong>User Details</strong>,
+      html: (
+        <div style={{ textAlign: "left" }}>
+          <div className="flex justify-center mb-4">
+            <img
+              src={user.imageURL || "https://via.placeholder.com/100"}
+              alt={user.name}
+              className="rounded-full w-24 h-24 object-cover border-4 border-indigo-600 shadow-lg"
+            />
+          </div>
+          <p><b>Name:</b> {user.name || "N/A"}</p>
+          <p><b>Email:</b> {user.email}</p>
+          <p><b>Role:</b> {user.role}</p>
+          <p><b>Status:</b> {user.status}</p>
+          <p><b>Blood Group:</b> {user.bloodGroup || "N/A"}</p>
+          <p><b>Joined:</b> {new Date(user.createdAt).toLocaleDateString()}</p>
+        </div>
+      ),
+      showCloseButton: true,
+      showCancelButton: false,
+      focusConfirm: false,
+      confirmButtonText: "Close",
+      customClass: {
+        popup: "rounded-3xl p-8 shadow-2xl bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100",
+      },
+    });
+  };
+
   return (
-    <div className="p-6 max-w-6xl mx-auto bg-gradient-to-r from-purple-50 via-pink-50 to-red-50 rounded-lg shadow-lg">
-      <h1 className="text-4xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-pink-600">
-        All Users
+    <div className="p-8 max-w-7xl mx-auto bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 rounded-3xl shadow-2xl">
+      <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-600 mb-10 select-none">
+        User Management Panel
       </h1>
 
       {/* Filter */}
-      <div className="mb-6 flex items-center space-x-4">
-        <label className="font-semibold text-lg">Filter by Status:</label>
+      <div className="flex flex-wrap justify-start items-center gap-6 mb-10">
+        <label
+          htmlFor="statusFilter"
+          className="text-xl font-semibold text-gray-700"
+        >
+          Filter by Status:
+        </label>
         <select
+          id="statusFilter"
           value={filterStatus}
-          onChange={e => {
+          onChange={(e) => {
             setFilterStatus(e.target.value);
             setPage(1);
           }}
-          className="border border-purple-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
+          className="w-48 py-3 px-4 rounded-xl border-2 border-indigo-400 bg-white text-indigo-900 font-medium
+                     shadow-md focus:outline-none focus:ring-4 focus:ring-indigo-300 transition"
         >
           <option value="all">All</option>
           <option value="active">Active</option>
           <option value="blocked">Blocked</option>
+          <option value="active-volunteer">Active Volunteers</option>
         </select>
       </div>
 
+      {/* Role counts display */}
+      <div className="mb-6 flex flex-wrap gap-6 text-indigo-700 font-semibold text-lg select-none">
+        {Object.entries(roleCounts).map(([role, count]) => (
+          <div
+            key={role}
+            className="bg-indigo-100 px-4 py-2 rounded-xl shadow-inner"
+            title={`Total ${role.charAt(0).toUpperCase() + role.slice(1)}s`}
+          >
+            {role.charAt(0).toUpperCase() + role.slice(1)}: {count}
+          </div>
+        ))}
+      </div>
+
+      {/* Loading & Error */}
       {loading ? (
-        <p className="text-center text-xl font-medium text-purple-700 animate-pulse">Loading users...</p>
+        <div className="flex justify-center items-center py-20">
+          <svg
+            className="animate-spin h-14 w-14 text-indigo-600"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8H4z"
+            />
+          </svg>
+        </div>
+      ) : error ? (
+        <div className="text-center text-red-600 font-semibold py-14">{error}</div>
       ) : (
         <>
-          <table className="w-full border-collapse border border-purple-300 rounded-lg overflow-hidden shadow-md">
-            <thead className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-              <tr>
-                <th className="p-4 border border-purple-400">Avatar</th>
-                <th className="p-4 border border-purple-400">Email</th>
-                <th className="p-4 border border-purple-400">Name</th>
-                <th className="p-4 border border-purple-400">Role</th>
-                <th className="p-4 border border-purple-400">Status</th>
-                <th className="p-4 border border-purple-400">Blood Group</th>
-                <th className="p-4 border border-purple-400">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedUsers.length === 0 && (
+          {/* Table */}
+          <div className="overflow-x-auto rounded-2xl shadow-lg border border-indigo-200">
+            <table className="min-w-full divide-y divide-indigo-200 bg-white rounded-2xl">
+              <thead className="bg-gradient-to-r from-indigo-600 via-purple-700 to-pink-700 text-white">
                 <tr>
-                  <td colSpan="7" className="text-center p-6 text-purple-700 font-semibold text-lg">
-                    No users found.
-                  </td>
+                  {[
+                    "Avatar",
+                    "Email",
+                    "Name",
+                    "Role",
+                    "Status",
+                    "Blood Group",
+                    "Actions",
+                  ].map((header, idx) => (
+                    <th
+                      key={idx}
+                      scope="col"
+                      className="px-6 py-4 text-left text-sm font-semibold tracking-wider"
+                    >
+                      {header}
+                    </th>
+                  ))}
                 </tr>
-              )}
-
-              {paginatedUsers.map(user => (
-                <tr key={user._id} className="hover:bg-purple-50">
-                  <td className="border border-purple-400 p-2 text-center">
-                    <img
-                      src={user.imageURL || 'https://via.placeholder.com/40'}
-                      alt={user.name}
-                      className="w-10 h-10 rounded-full mx-auto"
-                    />
-                  </td>
-                  <td className="border border-purple-400 p-2">{user.email}</td>
-                  <td className="border border-purple-400 p-2">{user.name}</td>
-                  <td className="border border-purple-400 p-2 capitalize">{user.role}</td>
-                  <td className="border border-purple-400 p-2 capitalize">{user.status}</td>
-                  <td className="border border-purple-400 p-2">{user.bloodGroup}</td>
-                  <td className="border border-purple-400 p-2 space-x-2 text-center">
-                    {user.status === 'active' && (
-                      <button
-                        onClick={() => updateUser(user._id, { status: 'blocked' })}
-                        disabled={updatingUserId === user._id}
-                        className={`px-3 py-1 rounded text-white font-semibold transition ${
-                          updatingUserId === user._id ? 'bg-red-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700'
+              </thead>
+              <tbody className="divide-y divide-indigo-100">
+                {paginatedUsers.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan="7"
+                      className="text-center py-14 text-indigo-600 font-semibold text-lg"
+                    >
+                      No users found.
+                    </td>
+                  </tr>
+                ) : (
+                  paginatedUsers.map((user) => (
+                    <tr
+                      key={user._id}
+                      className="hover:bg-indigo-50 transition cursor-pointer"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <img
+                          src={user.imageURL || "https://via.placeholder.com/48"}
+                          alt={user.name || "User avatar"}
+                          className="w-12 h-12 rounded-full object-cover border-2 border-indigo-300 shadow"
+                        />
+                      </td>
+                      <td className="px-6 py-4 text-indigo-800 font-medium text-sm">
+                        {user.email}
+                      </td>
+                      <td className="px-6 py-4 text-indigo-800 font-semibold text-sm">
+                        {user.name || "N/A"}
+                      </td>
+                      <td className="px-6 py-4 capitalize text-indigo-700 font-medium text-sm">
+                        {(user.role || "").toLowerCase()}
+                      </td>
+                      <td
+                        className={`px-6 py-4 capitalize font-semibold text-sm ${
+                          (user.status || "").toLowerCase() === "active"
+                            ? "text-green-600"
+                            : "text-red-600"
                         }`}
                       >
-                        {updatingUserId === user._id ? 'Blocking...' : 'Block'}
-                      </button>
-                    )}
+                        {user.status || "N/A"}
+                      </td>
+                      <td className="px-6 py-4 text-indigo-700 font-medium text-sm">
+                        {user.bloodGroup || "N/A"}
+                      </td>
+                      <td className="px-6 py-4 flex flex-wrap gap-2 items-center">
+                        {/* Block / Unblock */}
+                        {(user.status || "").toLowerCase() === "active" && (
+                          <button
+                            onClick={() =>
+                              updateUser(user._id, { status: "blocked" }, "Block User")
+                            }
+                            disabled={updatingUserId === user._id}
+                            title="Block User"
+                            className="p-2 rounded-lg bg-red-600 text-white shadow-md hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {updatingUserId === user._id ? (
+                              <LoadingSpinner />
+                            ) : (
+                              <FaLock size={18} />
+                            )}
+                          </button>
+                        )}
 
-                    {user.status === 'blocked' && (
-                      <button
-                        onClick={() => updateUser(user._id, { status: 'active' })}
-                        disabled={updatingUserId === user._id}
-                        className={`px-3 py-1 rounded text-white font-semibold transition ${
-                          updatingUserId === user._id ? 'bg-green-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'
-                        }`}
-                      >
-                        {updatingUserId === user._id ? 'Unblocking...' : 'Unblock'}
-                      </button>
-                    )}
+                        {(user.status || "").toLowerCase() === "blocked" && (
+                          <button
+                            onClick={() =>
+                              updateUser(user._id, { status: "active" }, "Unblock User")
+                            }
+                            disabled={updatingUserId === user._id}
+                            title="Unblock User"
+                            className="p-2 rounded-lg bg-green-600 text-white shadow-md hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {updatingUserId === user._id ? (
+                              <LoadingSpinner />
+                            ) : (
+                              <FaUnlock size={18} />
+                            )}
+                          </button>
+                        )}
 
-                    {user.role !== 'volunteer' && (
-                      <button
-                        onClick={() => updateUser(user._id, { role: 'volunteer' })}
-                        disabled={updatingUserId === user._id}
-                        className={`px-3 py-1 rounded text-white font-semibold transition ${
-                          updatingUserId === user._id ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-                        }`}
-                      >
-                        {updatingUserId === user._id ? 'Updating...' : 'Make Volunteer'}
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                        {/* Make Admin */}
+                        {(user.role || "").toLowerCase() !== "admin" && (
+                          <button
+                            onClick={() =>
+                              updateUser(user._id, { role: "admin" }, "Make Admin")
+                            }
+                            disabled={updatingUserId === user._id}
+                            title="Make Admin"
+                            className="p-2 rounded-lg bg-yellow-500 text-white shadow-md hover:bg-yellow-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {updatingUserId === user._id ? (
+                              <LoadingSpinner />
+                            ) : (
+                              <FaUserShield size={18} />
+                            )}
+                          </button>
+                        )}
 
-          {/* Pagination Controls */}
-          <div className="mt-6 flex justify-center items-center space-x-6 text-purple-700 font-semibold">
+                        {/* Make Volunteer */}
+                        {(user.role || "").toLowerCase() !== "volunteer" && (
+                          <button
+                            onClick={() =>
+                              updateUser(user._id, { role: "volunteer" }, "Make Volunteer")
+                            }
+                            disabled={updatingUserId === user._id}
+                            title="Make Volunteer"
+                            className="p-2 rounded-lg bg-indigo-600 text-white shadow-md hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {updatingUserId === user._id ? (
+                              <LoadingSpinner />
+                            ) : (
+                              <FaUserCheck size={18} />
+                            )}
+                          </button>
+                        )}
+
+                        {/* Make Donor */}
+                        {(user.role || "").toLowerCase() !== "donor" && (
+                          <button
+                            onClick={() =>
+                              updateUser(user._id, { role: "donor" }, "Make Donor")
+                            }
+                            disabled={updatingUserId === user._id}
+                            title="Make Donor"
+                            className="p-2 rounded-lg bg-pink-600 text-white shadow-md hover:bg-pink-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {updatingUserId === user._id ? (
+                              <LoadingSpinner />
+                            ) : (
+                              <FaUserAlt size={18} />
+                            )}
+                          </button>
+                        )}
+
+                        {/* Details */}
+                        <button
+                          onClick={() => showUserDetails(user)}
+                          title="View Details"
+                          className="p-2 rounded-lg bg-indigo-300 text-indigo-900 shadow-md hover:bg-indigo-400 transition"
+                        >
+                          <FaInfoCircle size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="mt-8 flex justify-center gap-4 text-indigo-700 select-none">
             <button
-              onClick={() => setPage(p => Math.max(p - 1, 1))}
+              onClick={() => setPage((p) => Math.max(p - 1, 1))}
               disabled={page === 1}
-              className="px-4 py-2 border border-purple-400 rounded disabled:opacity-50 hover:bg-purple-200"
+              className="px-4 py-2 rounded-lg bg-indigo-100 hover:bg-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
               Prev
             </button>
-            <span>
-              Page {page} of {totalPages}
-            </span>
+            {[...Array(totalPages).keys()].map((p) => (
+              <button
+                key={p + 1}
+                onClick={() => setPage(p + 1)}
+                className={`px-4 py-2 rounded-lg transition ${
+                  page === p + 1
+                    ? "bg-indigo-600 text-white font-bold"
+                    : "bg-indigo-100 hover:bg-indigo-200"
+                }`}
+              >
+                {p + 1}
+              </button>
+            ))}
             <button
-              onClick={() => setPage(p => Math.min(p + 1, totalPages))}
-              disabled={page === totalPages}
-              className="px-4 py-2 border border-purple-400 rounded disabled:opacity-50 hover:bg-purple-200"
+              onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+              disabled={page === totalPages || totalPages === 0}
+              className="px-4 py-2 rounded-lg bg-indigo-100 hover:bg-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
               Next
             </button>
@@ -185,5 +428,29 @@ const AllUser = () => {
     </div>
   );
 };
+
+// Spinner component for loading states in buttons
+const LoadingSpinner = () => (
+  <svg
+    className="animate-spin h-5 w-5 text-white mx-auto"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="4"
+    />
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8v8H4z"
+    />
+  </svg>
+);
 
 export default AllUser;

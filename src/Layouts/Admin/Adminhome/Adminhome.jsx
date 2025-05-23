@@ -15,9 +15,9 @@ const Adminhome = () => {
 
   //User D
   const { data = [], error, isLoading } = useQuery({
-    queryKey: ['userall'],
+    queryKey: ['createdonation'],
     queryFn: () =>
-      fetch('http://localhost:5000/userall').then(res => {
+      fetch('http://localhost:5000/createdonation').then(res => {
         if (!res.ok) throw new Error('Failed to fetch');
         return res.json();
       }),
@@ -57,7 +57,24 @@ const Adminhome = () => {
             <div><p className="text-sm text-white/90">New</p><p className="text-xl font-semibold">89</p></div>
             <div><p className="text-sm text-white/90">Banned</p><p className="text-xl font-semibold">12</p></div>
           </div>
-          <Link to='/dashboard/userall'>AllUser</Link>
+   <div className='flex justify-between'>
+               <Link
+      to="/dashboard/userall"
+      className="inline-flex items-center mt-20 gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md transition"
+      title="Go to All Users"
+    >
+      <FaUsers size={20} />
+      <span>AllUser</span>
+    </Link>
+              <Link
+      to="/dashboard/admin/my-donation-requests-page"
+      className="inline-flex items-center mt-20 gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md transition"
+      title="Go to All Users"
+    >
+      <FaUsers size={20} />
+      <span>Donation Requests</span>
+    </Link>
+   </div>
         </div>
         {/* Donors Card */}
         <div className="bg-gradient-to-r from-red-600 to-red-800 text-white p-6 rounded-xl shadow-xl transition-transform transform hover:scale-105">
