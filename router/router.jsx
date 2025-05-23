@@ -11,69 +11,90 @@ import CreateDonationRequest from "../src/Layouts/Dashboard/DonarDashboard/Creat
 import Mydonationrequests from "../src/Layouts/Dashboard/DonarDashboard/Donationrequests/Mydonationrequests";
 import Viewallrequest from "../src/Layouts/Dashboard/DonarDashboard/Donationrequests/Alldonation/Viewallrequest";
 import Allsearch from "../src/Pages/Allsearch/Allsearch";
+import Editdonation from "../src/Layouts/Dashboard/DonarDashboard/Editdonation/Editdonation";
+import Donationdetails from "../src/Layouts/Dashboard/DonarDashboard/Donationdetails/Donationdetails";
+import Adminhome from "../src/Layouts/Admin/Adminhome/Adminhome";
+import Tests from "../src/Shared/Tests";
+import AllUser from "../src/Layouts/Admin/AllUser/AllUser";
 
 
 
 export const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <MainLayout></MainLayout>,
-      errorElement: <h2>Error Page</h2>,
-      children: [
-        {
-          path: "/",
-          element: <Home></Home>,
-        },
-        {
-          path: "allsearch",
-          element: <Allsearch></Allsearch>
-        
-        },
-      
-     
-      ],
-    },
-    {
-      path: "login",
-      element: <Login></Login>,
-    },
-    {
-      path: "register",
-      element: <Register></Register>,
-    }
-    ,
-    {
-       path: "dashboard",
-      element: <DashboardLayout></DashboardLayout>,
-      errorElement: <h2>Error Page</h2>,
-      children: [
-         
-        {
-          index: true,
-          element: <DonorDashboardHome></DonorDashboardHome>,
-        },
-        {
-          path: "create-donation-request",
-          element: <PrivateRoute><CreateDonationRequest></CreateDonationRequest></PrivateRoute>
+  {
+    path: "/",
+    element: <MainLayout></MainLayout>,
+    errorElement: <h2>Error Page</h2>,
+    children: [
+      {
+        path: "/",
+        element: <Home></Home>,
+      },
+      {
+        path: "allsearch",
+        element: <Allsearch></Allsearch>
 
-        },
-        {
-          path:"my-donation-requests",
-          element: <PrivateRoute><Mydonationrequests></Mydonationrequests></PrivateRoute>
-        },
-         {
-          path: "profile/:email",
-          element: <PrivateRoute><EditProfile></EditProfile></PrivateRoute>
-        },
-        {
-          path: "my-donationsall",
-          element: <PrivateRoute><Viewallrequest></Viewallrequest></PrivateRoute>,
-        
-        },
-        {
-          path: "p",
-          element: <PrivateRoute><h2>Hi i am</h2></PrivateRoute>
-        }
-      ],
-    }
-  ]);
+      },
+
+
+    ],
+  },
+  {
+    path: "login",
+    element: <Login></Login>,
+  },
+  {
+    path: "register",
+    element: <Register></Register>,
+  }
+  ,
+  {
+    path: "dashboard",
+    element: <DashboardLayout></DashboardLayout>,
+    errorElement: <h2>Error Page</h2>,
+    children: [
+
+      {
+        index: true,
+        element: <DonorDashboardHome></DonorDashboardHome>,
+      },
+      {
+        path: "create-donation-request",
+        element: <PrivateRoute><CreateDonationRequest></CreateDonationRequest></PrivateRoute>
+
+      },
+      {
+        path: "my-donation-requests",
+        element: <PrivateRoute><Mydonationrequests></Mydonationrequests></PrivateRoute>
+      },
+      {
+        path: "profile/:email",
+        element: <PrivateRoute><EditProfile></EditProfile></PrivateRoute>
+      },
+      {
+        path: "my-donationsall",
+        element: <PrivateRoute><Viewallrequest></Viewallrequest></PrivateRoute>,
+
+      },
+      {
+        path: "edit-donation-request/:id",
+        element: <PrivateRoute><Editdonation /></PrivateRoute>,
+      },
+      {
+        path: "donation-details/:id",
+        element: <PrivateRoute><Donationdetails></Donationdetails></PrivateRoute>,
+      },
+      {
+        path: "admin",
+        element: <PrivateRoute><Adminhome></Adminhome></PrivateRoute>
+      },
+      {
+        path: "userall",
+        element: <PrivateRoute><AllUser></AllUser></PrivateRoute>
+      },
+      {
+        path: "t",
+        element: <PrivateRoute><Tests></Tests></PrivateRoute>
+      }
+    ],
+  }
+]);

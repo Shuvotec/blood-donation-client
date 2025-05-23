@@ -1,0 +1,117 @@
+import React, { useContext } from 'react';
+import { BiDonateBlood } from "react-icons/bi";
+
+import {
+  FaUsers,
+  FaHeartbeat,
+  FaCalendarCheck
+} from 'react-icons/fa';
+import { AuthContext } from '../../../providers/AuthProvider';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+
+const Adminhome = () => {
+  const { user } = useContext(AuthContext);
+
+  //User D
+  const { data = [], error, isLoading } = useQuery({
+    queryKey: ['userall'],
+    queryFn: () =>
+      fetch('http://localhost:5000/userall').then(res => {
+        if (!res.ok) throw new Error('Failed to fetch');
+        return res.json();
+      }),
+  });
+
+  //data filter Blood Group
+  const aCount = data.filter(user => user?.bloodGroup === 'A+').length;
+  const bCount = data.filter(user => user?.bloodGroup === 'B+').length;
+  const abPlusCount = data.filter(user => user?.bloodGroup === 'AB+').length;
+  const aminus = data.filter(user => user?.bloodGroup === 'A-').length;
+  const bminus = data.filter(user => user?.bloodGroup === 'B-').length;
+  const abminus = data.filter(user => user?.bloodGroup === 'AB-').length;
+  const oplush = data.filter(user => user?.bloodGroup === 'O+').length;
+  const ominus = data.filter(user => user?.bloodGroup === 'O-').length;
+
+  console.log(aCount, bCount, abPlusCount, aminus, bminus, abminus, oplush, ominus);
+
+
+
+  return (
+    <div className="min-h-screen shadow-md p-6">
+
+
+
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Donors Card */}
+        <div className="bg-gradient-to-r from-red-600 to-red-800 text-white p-6 rounded-xl shadow-xl transition-transform transform hover:scale-105">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-2xl font-bold">Donors</h3>
+            <div className="opacity-80"><FaUsers size={30}/></div>
+
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div><p className="text-sm text-white/90">Active</p><p className="text-xl font-semibold">{data?.length}</p></div>
+            <div><p className="text-sm text-white/90">Inactive</p><p className="text-xl font-semibold">567</p></div>
+            <div><p className="text-sm text-white/90">New</p><p className="text-xl font-semibold">89</p></div>
+            <div><p className="text-sm text-white/90">Banned</p><p className="text-xl font-semibold">12</p></div>
+          </div>
+          <Link to='/dashboard/userall'>AllUser</Link>
+        </div>
+        {/* Donors Card */}
+        <div className="bg-gradient-to-r from-red-600 to-red-800 text-white p-6 rounded-xl shadow-xl transition-transform transform hover:scale-105">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-2xl font-bold">Donors</h3>
+            <div className="opacity-80"><BiDonateBlood  size={40} color="crimson"/></div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div><p className="text-sm text-white/90">A+</p><p className="text-xl font-semibold">{aCount} bags</p></div>
+            <div><p className="text-sm text-white/90">B+</p><p className="text-xl font-semibold">{bCount} bags</p></div>
+            <div><p className="text-sm text-white/90">AB+</p><p className="text-xl font-semibold">{abPlusCount} bags</p></div>
+            <div><p className="text-sm text-white/90">A-</p><p className="text-xl font-semibold">{aminus} bags</p></div>
+            <div><p className="text-sm text-white/90">B-</p><p className="text-xl font-semibold">{bminus} bags</p></div>
+            <div><p className="text-sm text-white/90">AB-</p><p className="text-xl font-semibold">{abminus} bags</p></div>
+            <div><p className="text-sm text-white/90">O+</p><p className="text-xl font-semibold">{oplush} bags</p></div>
+            <div><p className="text-sm text-white/90">O-</p><p className="text-xl font-semibold">{ominus} bags</p></div>
+          </div>
+        </div>
+
+        {/* Blood Stock Card */}
+    
+
+        {/* Donation Growth Card */}
+        <div className="bg-gradient-to-r from-yellow-500 to-yellow-700 text-white p-6 rounded-xl shadow-xl transition-transform transform hover:scale-105">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-2xl font-bold">Donation Growth</h3>
+            <div className="opacity-80"><FaHeartbeat size={30} /></div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div><p className="text-sm text-white/90">This Month</p><p className="text-xl font-semibold">8.7%</p></div>
+            <div><p className="text-sm text-white/90">Last Month</p><p className="text-xl font-semibold">7.2%</p></div>
+            <div><p className="text-sm text-white/90">This Quarter</p><p className="text-xl font-semibold">25%</p></div>
+            <div><p className="text-sm text-white/90">Last Quarter</p><p className="text-xl font-semibold">22%</p></div>
+          </div>
+        </div>
+
+        {/* Appointments Card */}
+        <div className="bg-gradient-to-r from-green-500 to-green-700 text-white p-6 rounded-xl shadow-xl transition-transform transform hover:scale-105">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-2xl font-bold">Appointments</h3>
+            <div className="opacity-80"><FaCalendarCheck size={30} /></div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div><p className="text-sm text-white/90">Completed</p><p className="text-xl font-semibold">45</p></div>
+            <div><p className="text-sm text-white/90">Pending</p><p className="text-xl font-semibold">12</p></div>
+            <div><p className="text-sm text-white/90">No Shows</p><p className="text-xl font-semibold">3</p></div>
+            <div><p className="text-sm text-white/90">Total Bookings</p><p className="text-xl font-semibold">60</p></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  );
+};
+
+export default Adminhome;

@@ -146,7 +146,7 @@ const CreateDonationRequest = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formPayload),
         });
-
+        navigate(from);
         if (response.ok) {
           const result = await response.json();
           Swal.fire({

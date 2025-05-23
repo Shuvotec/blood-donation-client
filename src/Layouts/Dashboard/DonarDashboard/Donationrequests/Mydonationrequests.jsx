@@ -101,7 +101,8 @@ const DonorDashboardHome = () => {
                         </button>
                       </>
                     )}
-                    <Link to={`/edit-donation/${request._id}`}>
+                    
+                      <Link to={`/dashboard/edit-donation-request/${request._id}`}>
                       <button className="btn btn-ghost btn-xs">Edit</button>
                     </Link>
                     <button
@@ -113,8 +114,8 @@ const DonorDashboardHome = () => {
                     >
                       Delete
                     </button>
-                    <Link to={`/donation-details/${request._id}`}>
-                      <button className="btn btn-ghost btn-xs">View</button>
+                    <Link to={`/dashboard/donation-details/${request._id}`}>
+                      <button className="btn btn-ghost btn-xs">Details</button>
                     </Link>
                   </td>
                 </tr>

@@ -46,7 +46,7 @@ const Navbar = () => {
       </div>
     );
   }
-   console.log(userData)
+   //console.log(userData)
   return (
     <div className='pb-20 md:mb-2'>
       <div className="navbar bg-[#ee2405be] bg-opacity-20 text-white md:px-20 py-4 backdrop-blur-sm fixed top-0 left-0 right-0 shadow-lg z-20">

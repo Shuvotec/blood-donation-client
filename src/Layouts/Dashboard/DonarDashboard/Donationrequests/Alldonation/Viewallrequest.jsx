@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../../../../providers/AuthProvider';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Viewallrequest = () => {
   const { user } = useContext(AuthContext);
   const email = user?.email;
-
+  const navigate = useNavigate();
   const [showAll, setShowAll] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteRequestId, setDeleteRequestId] = useState(null);
@@ -57,6 +57,10 @@ const Viewallrequest = () => {
       setShowDeleteModal(false);
     }
   };
+  const handleEditrequest = (id) => {
+    navigate(`edit-donation-request/${id}`);
+    console.log(id);
+  }
 
   return (
     <div className="md:mb-20">
@@ -67,6 +71,7 @@ const Viewallrequest = () => {
           <table className="table">
             <thead>
               <tr>
+                <th>No</th>
                 <th>Recipient Name</th>
                 <th>Recipient Location</th>
                 <th>Donation Date</th>
@@ -77,8 +82,9 @@ const Viewallrequest = () => {
               </tr>
             </thead>
             <tbody>
-              {displayedRequests.map((request) => (
+              {displayedRequests.map((request, index) => (
                 <tr key={request._id}>
+                  <td>{index + 1}</td>
                   <td>{request.recipientName}</td>
                   <td>{`${request.district}, ${request.upazila}`}</td>
                   <td>{request.donationDate}</td>
@@ -102,9 +108,12 @@ const Viewallrequest = () => {
                         </button>
                       </>
                     )}
-                    <Link to={`/edit-donation/${request._id}`}>
+
+                    <Link to={`/dashboard/edit-donation-request/${request._id}`}>
                       <button className="btn btn-ghost btn-xs">Edit</button>
                     </Link>
+
+
                     <button
                       className="btn btn-ghost btn-xs"
                       onClick={() => {
@@ -114,8 +123,8 @@ const Viewallrequest = () => {
                     >
                       Delete
                     </button>
-                    <Link to={`/donation-details/${request._id}`}>
-                      <button className="btn btn-ghost btn-xs">View</button>
+                    <Link to={`/dashboard/donation-details/${request._id}`}>
+                      <button className="btn btn-ghost btn-xs">Details</button>
                     </Link>
                   </td>
                 </tr>

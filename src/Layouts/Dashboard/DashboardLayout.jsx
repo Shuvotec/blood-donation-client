@@ -2,8 +2,12 @@ import React, { useContext, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { AuthContext } from '../../providers/AuthProvider';
+import { IoAddCircleSharp } from "react-icons/io5";
 import { FaHome, FaUserEdit, FaArrowLeft, FaBars } from 'react-icons/fa';
-import { MdDashboard } from 'react-icons/md';
+import { GrUserAdmin } from "react-icons/gr";
+
+
+
 
 const DashboardLayout = () => {
   const { user } = useContext(AuthContext);
@@ -16,7 +20,7 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen text-white relative">
+    <div className="flex flex-col md:flex-row min-h-screen text-white">
 
       {/* Mobile Hamburger Button */}
       <button
@@ -37,7 +41,7 @@ const DashboardLayout = () => {
       )}
 
       {/* Sidebar */}
-      <motion.div
+       <motion.div
         className={`fixed md:static top-0 left-0 h-full w-64 bg-[#732255] p-4 z-50 overflow-y-auto md:block ${sidebarOpen ? 'block' : 'hidden'
           }`}
         initial={{ x: -200 }}
@@ -59,10 +63,11 @@ const DashboardLayout = () => {
           <li>
             <NavLink
               className="text-lg flex items-center gap-2"
-              to="/dashboard/create-donation-request"
+              to="/dashboard/admin"
               onClick={() => setSidebarOpen(false)}
             >
-              <MdDashboard />Khali Ace
+              <GrUserAdmin />
+Admin Home
             </NavLink>
           </li>
           <li>
@@ -72,6 +77,17 @@ const DashboardLayout = () => {
             >
               <FaUserEdit /> Edit Profile
             </button>
+          </li>
+        
+          <li>
+            <NavLink
+              className="text-lg flex items-center gap-2"
+              to="create-donation-request"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <IoAddCircleSharp />
+ Create Donation
+            </NavLink>
           </li>
           <li>
             <NavLink
@@ -106,10 +122,11 @@ const DashboardLayout = () => {
 
 
         {/* Nested Routes Outlet */}
-        <div className="mt-10">
+         <div className="mt-10">
           <Outlet />
         </div>
       </motion.div>
+     
     </div>
   );
 };
