@@ -171,6 +171,7 @@ const EditProfile = () => {
                 onChange={formik.handleChange}
                 value={formik.values.name}
                 disabled={!isEditable}
+                readOnly
               />
 
               <label className="label">Email</label>

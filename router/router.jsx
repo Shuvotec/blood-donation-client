@@ -17,6 +17,9 @@ import Adminhome from "../src/Layouts/Admin/Adminhome/Adminhome";
 import Tests from "../src/Shared/Tests";
 import AllUser from "../src/Layouts/Admin/AllUser/AllUser";
 import MyDonationreq from "../src/Layouts/Admin/MyDonationreq/MyDonationreq";
+import Contentmana from "../src/Layouts/Admin/Contentmana/Contentmana";
+import Createblog from "../src/Layouts/Admin/Contentmana/Createblog/Createblog";
+import Editcontent from "../src/Layouts/Admin/Contentmana/Editcontent/Editcontent";
 
 
 
@@ -93,8 +96,21 @@ export const router = createBrowserRouter([
         element: <PrivateRoute><AllUser></AllUser></PrivateRoute>
       },
       {
-        path: "admin/my-donation-requests-page",
+        path: "all-blood-donation-request",
         element: <PrivateRoute><MyDonationreq></MyDonationreq></PrivateRoute>
+      },
+
+      {
+        path:"content-management",
+        element: <PrivateRoute><Contentmana></Contentmana></PrivateRoute>
+      },
+      {
+        path:"content-management/add-blog",
+        element: <PrivateRoute><Createblog></Createblog></PrivateRoute>
+      },
+      {
+        path:"content-management/Edit-blog/:id",
+        element: <PrivateRoute><Editcontent></Editcontent></PrivateRoute>
       },
 
       {

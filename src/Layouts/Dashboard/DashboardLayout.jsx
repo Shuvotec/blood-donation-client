@@ -70,6 +70,7 @@ const DashboardLayout = () => {
 Admin Home
             </NavLink>
           </li>
+         
           <li>
             <button
               onClick={() => handleEdit(user?.email)}
@@ -78,6 +79,7 @@ Admin Home
               <FaUserEdit /> Edit Profile
             </button>
           </li>
+    
         
           <li>
             <NavLink
