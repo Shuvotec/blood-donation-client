@@ -8,7 +8,7 @@ const PAGE_SIZE = 5;
 
 const MyDonationreq = () => {
   const [updatingId, setUpdatingId] = useState(null);
-  const [filterStatus, setFilterStatus] = useState('all'); // all, pending, active
+  const [filterStatus, setFilterStatus] = useState('all'); 
   const [filterBloodGroup, setFilterBloodGroup] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -67,20 +67,18 @@ const MyDonationreq = () => {
     }
   };
 
-  // Filter donation requests by status and blood group
+  // Filter donation requests
   const filteredRequests = donationRequests.filter((req) => {
     const statusMatch = filterStatus === 'all' || req.status === filterStatus;
     const bloodGroupMatch = filterBloodGroup === 'all' || req.bloodGroup === filterBloodGroup;
     return statusMatch && bloodGroupMatch;
   });
 
-  // Pagination calculations
   const totalItems = filteredRequests.length;
   const totalPages = Math.ceil(totalItems / PAGE_SIZE);
   const startIdx = (currentPage - 1) * PAGE_SIZE;
   const paginatedRequests = filteredRequests.slice(startIdx, startIdx + PAGE_SIZE);
 
-  // Handle page change
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
@@ -102,9 +100,7 @@ const MyDonationreq = () => {
         Donation Requests
       </h2>
 
-      {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6 justify-center items-center">
-        {/* Status Filter */}
         <select
           value={filterStatus}
           onChange={(e) => {
@@ -118,7 +114,6 @@ const MyDonationreq = () => {
           <option value="active">Active</option>
         </select>
 
-        {/* Blood Group Filter */}
         <select
           value={filterBloodGroup}
           onChange={(e) => {
@@ -136,7 +131,6 @@ const MyDonationreq = () => {
         </select>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto bg-red-800 shadow-lg rounded-lg max-w-full mx-auto">
         <table className="min-w-full divide-y divide-gray-200 text-sm sm:text-base">
           <thead className="bg-red-700 text-white">
@@ -211,7 +205,6 @@ const MyDonationreq = () => {
         </table>
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-4 mt-6 text-white">
           <button
@@ -227,7 +220,6 @@ const MyDonationreq = () => {
             <FiChevronLeft size={20} />
           </button>
 
-          {/* Pages */}
           {[...Array(totalPages)].map((_, idx) => {
             const pageNum = idx + 1;
             return (

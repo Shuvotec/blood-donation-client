@@ -26,8 +26,8 @@ const BlogManager = () => {
       text: `Do you want to ${action.toLowerCase()} this blog?`,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#4F46E5', // Indigo-600
-      cancelButtonColor: '#EF4444', // Red-500
+      confirmButtonColor: '#4F46E5', 
+      cancelButtonColor: '#EF4444', 
       confirmButtonText: `Yes, ${action.toLowerCase()} it!`,
     });
 
@@ -52,8 +52,8 @@ const BlogManager = () => {
       text: 'This blog will be permanently deleted!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#EF4444', // Red-500
-      cancelButtonColor: '#4F46E5', // Indigo-600
+      confirmButtonColor: '#EF4444', 
+      cancelButtonColor: '#4F46E5', 
       confirmButtonText: 'Yes, delete it!',
     });
 
@@ -88,7 +88,6 @@ const BlogManager = () => {
         </button>
       </header>
 
-      {/* Filters & Search */}
       <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-3">
           <select
@@ -124,7 +123,6 @@ const BlogManager = () => {
         </div>
       </section>
 
-      {/* Blog Table */}
       <section>
         {isLoading ? (
           <p className="text-center text-gray-500 py-10"><span className="loading loading-spinner loading-xl"></span></p>

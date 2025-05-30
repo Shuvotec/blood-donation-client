@@ -58,14 +58,14 @@ const AllUser = () => {
     page * PAGE_SIZE
   );
 
-  // Count users by role for display
+  // Count users
   const roleCounts = data.reduce((acc, user) => {
     const role = (user.role || "unknown").toLowerCase();
     acc[role] = (acc[role] || 0) + 1;
     return acc;
   }, {});
 
-  // Update user function with SweetAlert confirmations
+  // Update user
   const updateUser = async (userId, updates, actionLabel) => {
     const confirmResult = await MySwal.fire({
       title: `Are you sure you want to ${actionLabel}?`,
@@ -85,7 +85,6 @@ const AllUser = () => {
       if (updates.role === "admin") {
         endpoint = `http://localhost:5000/users/admin/${userId}`;
       }
-      // Add other role endpoints if needed
 
       const res = await fetch(endpoint, {
         method: "PATCH",
@@ -116,7 +115,6 @@ const AllUser = () => {
     }
   };
 
-  // Show user details modal with custom design
   const showUserDetails = (user) => {
     MySwal.fire({
       title: <strong>User Details</strong>,
@@ -153,7 +151,6 @@ const AllUser = () => {
         User Management Panel
       </h1>
 
-      {/* Filter */}
       <div className="flex flex-wrap justify-start items-center gap-6 mb-10">
         <label
           htmlFor="statusFilter"
@@ -178,7 +175,6 @@ const AllUser = () => {
         </select>
       </div>
 
-      {/* Role counts display */}
       <div className="mb-6 flex flex-wrap gap-6 text-indigo-700 font-semibold text-lg select-none">
         {Object.entries(roleCounts).map(([role, count]) => (
           <div
@@ -191,7 +187,6 @@ const AllUser = () => {
         ))}
       </div>
 
-      {/* Loading & Error */}
       {loading ? (
         <div className="flex justify-center items-center py-20">
           <svg
@@ -219,7 +214,6 @@ const AllUser = () => {
         <div className="text-center text-red-600 font-semibold py-14">{error}</div>
       ) : (
         <>
-          {/* Table */}
           <div className="overflow-x-auto rounded-2xl shadow-lg border border-indigo-200">
             <table className="min-w-full divide-y divide-indigo-200 bg-white rounded-2xl">
               <thead className="bg-gradient-to-r from-indigo-600 via-purple-700 to-pink-700 text-white">
@@ -288,7 +282,6 @@ const AllUser = () => {
                         {user.bloodGroup || "N/A"}
                       </td>
                       <td className="px-6 py-4 flex flex-wrap gap-2 items-center">
-                        {/* Block / Unblock */}
                         {(user.status || "").toLowerCase() === "active" && (
                           <button
                             onClick={() =>
@@ -323,7 +316,6 @@ const AllUser = () => {
                           </button>
                         )}
 
-                        {/* Make Admin */}
                         {(user.role || "").toLowerCase() !== "admin" && (
                           <button
                             onClick={() =>
@@ -341,7 +333,6 @@ const AllUser = () => {
                           </button>
                         )}
 
-                        {/* Make Volunteer */}
                         {(user.role || "").toLowerCase() !== "volunteer" && (
                           <button
                             onClick={() =>
@@ -359,7 +350,6 @@ const AllUser = () => {
                           </button>
                         )}
 
-                        {/* Make Donor */}
                         {(user.role || "").toLowerCase() !== "donor" && (
                           <button
                             onClick={() =>
@@ -377,7 +367,6 @@ const AllUser = () => {
                           </button>
                         )}
 
-                        {/* Details */}
                         <button
                           onClick={() => showUserDetails(user)}
                           title="View Details"
@@ -393,7 +382,6 @@ const AllUser = () => {
             </table>
           </div>
 
-          {/* Pagination */}
           <div className="mt-8 flex justify-center gap-4 text-indigo-700 select-none">
             <button
               onClick={() => setPage((p) => Math.max(p - 1, 1))}
@@ -429,7 +417,6 @@ const AllUser = () => {
   );
 };
 
-// Spinner component for loading states in buttons
 const LoadingSpinner = () => (
   <svg
     className="animate-spin h-5 w-5 text-white mx-auto"

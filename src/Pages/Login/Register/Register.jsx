@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Swal from "sweetalert2"; // SweetAlert2 import
+import Swal from "sweetalert2"; 
 import { AuthContext } from "../../../providers/AuthProvider";
 
 const image_hosting_Key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
@@ -40,7 +40,7 @@ const Register = () => {
     },
   });
 
-  // Fetch Districts based on division
+  // Fetch Districts
   const { data: districts = [] } = useQuery({
     queryKey: ["districts", selectedDivition],
     enabled: !!selectedDivition,
@@ -52,7 +52,7 @@ const Register = () => {
     },
   });
 
-  // Fetch Upazilas based on district
+  // Fetch Upazilas
   const { data: upazilas = [] } = useQuery({
     queryKey: ["upazilas", selectedDistrict],
     enabled: !!selectedDistrict,
@@ -64,7 +64,6 @@ const Register = () => {
     },
   });
 
-  // Formik with Yup validation
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -102,13 +101,11 @@ const Register = () => {
         const uploadedURL = data?.data?.display_url;
         setImageURL(uploadedURL);
 
-        // Current date and time
-        const createdAt = new Date().toISOString();  // ISO format timestamp
+        const createdAt = new Date().toISOString();  
         
 
         const status = "active";
         const role = "donor";
-        // Final form submission payload
         const formPayload = {
           email: values.email,
           name: values.name,
@@ -125,20 +122,18 @@ const Register = () => {
 
 
 
-        // POST request to register user
         const response = await fetch("http://localhost:5000/userall", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formPayload),  // Send the form data as JSON
+          body: JSON.stringify(formPayload),  
         });
 
         if (response.ok) {
           const result = await response.json();
           console.log("User registered successfully", result);
 
-          // Register user with Firebase Authentication
           createuser(formPayload.email, formPayload.password)
             .then((result) => {
               const loggedUser = result.user;
@@ -152,14 +147,12 @@ const Register = () => {
                 .catch((error) => console.log(error));
             });
 
-          // SweetAlert2 success alert
           Swal.fire({
             icon: "success",
             title: "Your Registration Successful!",
             text: `Welcome, ${formPayload?.name}!`,
           });
 
-          // Reset the form after successful submission
           resetForm();
         } else {
           throw new Error("Registration failed.");
@@ -167,7 +160,6 @@ const Register = () => {
       } catch (error) {
         console.error("Error:", error);
 
-        // SweetAlert2 error alert
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -185,14 +177,12 @@ const Register = () => {
     <div className="hero bg-[#ac2859] min-h-screen">
       <div className="hero-overlay bg-opacity-20 text-white text-5xl hidden md:block font-bold font-serif md:py-10 md:pl-20">Register Now</div>
       <div className="hero-content md:pt-20 flex-col lg:flex-row md:space-x-40">
-        {/* Left side (Lottie Animation) */}
         <div className="text-center md:w-[700px] flex justify-center items-center">
           <div className="hidden md:block">
             <Lottie animationData={bloodDonationAnimationR} loop />
           </div>
         </div>
 
-        {/* Right side (Registration Form) */}
         <div className="card bg-base-100 w-full shadow-2xl text-black">
           <div className="card-body">
             <form onSubmit={formik.handleSubmit} className="space-y-3 ">
@@ -200,7 +190,6 @@ const Register = () => {
                 Register
               </h2>
 
-              {/* Name */}
               <label className="label">Name</label>
               <input
                 type="text"
@@ -214,7 +203,6 @@ const Register = () => {
                 <div className="text-red-500">{formik.errors.name}</div>
               )}
 
-              {/* Email */}
               <label className="label">Email</label>
               <input
                 type="email"
@@ -240,7 +228,6 @@ const Register = () => {
                 <div className="text-red-500">{formik.errors.image}</div>
               )}
 
-              {/* Blood Group */}
               <label className="label">Blood Group</label>
               <select
                 value={selectedGroup}
@@ -257,7 +244,6 @@ const Register = () => {
                 ))}
               </select>
 
-              {/* Division */}
               <label className="label">Division</label>
               <select
                 value={selectedDivition}
@@ -279,7 +265,6 @@ const Register = () => {
                 ))}
               </select>
 
-              {/* District */}
               <label className="label">District</label>
               <select
                 value={selectedDistrict}
@@ -301,7 +286,6 @@ const Register = () => {
                 ))}
               </select>
 
-              {/* Upazila */}
               <label className="label">Upazila</label>
               <select
                 value={selectedUpazila}
@@ -320,7 +304,6 @@ const Register = () => {
                 ))}
               </select>
 
-              {/* Password */}
               <label className="label">Password</label>
               <input
                 type="password"
@@ -334,7 +317,6 @@ const Register = () => {
                 <div className="text-red-500">{formik.errors.password}</div>
               )}
 
-              {/* Confirm Password */}
               <label className="label">Confirm Password</label>
               <input
                 type="password"
@@ -351,7 +333,6 @@ const Register = () => {
                   </div>
                 )}
 
-              {/* Submit */}
               <button
                 type="submit"
                 className="btn bg-[#772c48] hover:bg-[#bc2356] text-white w-full"

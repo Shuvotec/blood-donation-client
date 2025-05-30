@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
+import { useQuery } from "@tanstack/react-query";
+
 import bloodDonationAnimation from "../../../assets/Lotti/Animation - 1742322367473 (1).json";
 import { AuthContext } from "../../../providers/AuthProvider";
 import SocialLogin from "../../../providers/SocialLogin";
@@ -25,9 +27,25 @@ const Login = () => {
         .min(6, "Password must be at least 6 characters")
         .required("Password is required"),
     }),
-
     onSubmit: async (values, { resetForm }) => {
       try {
+        if (!userInfo) {
+          return Swal.fire({
+            icon: "warning",
+            title: "User Data Not Ready",
+            text: "Please wait a moment and try again.",
+          });
+        }
+
+        if (userInfo.status === "Block") {
+          Swal.fire({
+            icon: "error",
+            title: "Blocked Account",
+            text: "Your account is blocked. Please contact support.",
+          });
+          return navigate("/blocked");
+        }
+
         const result = await signIn(values.email, values.password);
         const user = result.user;
 
@@ -37,8 +55,9 @@ const Login = () => {
           text: `Welcome back, ${user.email}`,
         });
 
-        resetForm(); // ✅ ফর্ম রিসেট
-        navigate(from, { replace: true }); // ✅ আগের পেজে পাঠাও
+        resetForm();
+        navigate(from, { replace: true });
+
       } catch (error) {
         console.error("Login Error:", error);
 
@@ -65,22 +84,37 @@ const Login = () => {
     },
   });
 
+  const email = formik.values.email;
+  const { data: userInfo, isLoading, error } = useQuery({
+    queryKey: ["user", email],
+    enabled: !!email,
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:5000/userall/${email}`);
+      if (!res.ok) throw new Error("User not found");
+      return res.json();
+    },
+  });
+
   return (
     <div className="hero bg-[#A53860] min-h-screen">
       <div className="hero-content flex-col lg:flex-row justify-between items-center gap-10 w-full px-6">
-        {/* Lottie Animation */}
         <div className="hidden lg:block w-[500px]">
           <Lottie animationData={bloodDonationAnimation} loop />
         </div>
 
-        {/* Login Form */}
         <div className="card bg-base-100 w-full max-w-md shadow-2xl">
           <div className="card-body">
+            {isLoading && (
+              <p className="text-center text-blue-600">Loading user data...</p>
+            )}
+            {error && (
+              <p className="text-center text-red-500">Failed to load user info.</p>
+            )}
+
             <form onSubmit={formik.handleSubmit}>
               <fieldset className="space-y-3">
                 <h2 className="text-3xl text-center font-bold text-[#A53860]">Login</h2>
 
-                {/* Email */}
                 <div>
                   <label className="label">Email</label>
                   <input
@@ -97,7 +131,7 @@ const Login = () => {
                   )}
                 </div>
 
-                {/* Password */}
+              
                 <div>
                   <label className="label">Password</label>
                   <input
@@ -132,7 +166,7 @@ const Login = () => {
 
             <div className="divider">OR</div>
 
-            <SocialLogin></SocialLogin>
+            <SocialLogin />
 
             <p className="text-sm text-center mt-4">
               Don't have an account?{" "}

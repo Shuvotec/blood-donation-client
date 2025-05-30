@@ -6,13 +6,11 @@ const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = () => {
-    // Add your logout logic here
     console.log("Logged out");
   };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
       <div
         className={`${
           sidebarOpen ? "block" : "hidden"
@@ -66,7 +64,6 @@ const Dashboard = () => {
         </button>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 p-8">
         <div className="mb-6 flex items-center gap-4">
           <div className="w-16 h-16 rounded-full bg-gray-300"></div>
@@ -77,7 +74,6 @@ const Dashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Dashboard Cards */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold text-gray-800">Total Sales</h3>
             <p className="text-2xl text-gray-900">$12,345</p>

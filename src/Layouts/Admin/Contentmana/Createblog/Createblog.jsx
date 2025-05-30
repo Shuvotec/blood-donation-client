@@ -19,7 +19,7 @@ const Createblog = () => {
   const editor = useRef(null);
   const navigate = useNavigate();
 
- const { data: userData, isLoading } = useQuery({
+  const { data: userData, isLoading } = useQuery({
     queryKey: ["user", email],
     queryFn: async () => {
       const res = await fetch(`http://localhost:5000/userall/${email}`);
@@ -28,6 +28,13 @@ const Createblog = () => {
     },
     enabled: !!email,
   });
+
+  // Helper function to strip HTML tags and get plain text
+  function stripHtml(html) {
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  }
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -58,10 +65,14 @@ const Createblog = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!title || !thumbnailUrl || !content) {
       Swal.fire("Warning", "Please fill all fields!", "warning");
       return;
     }
+
+    // Convert content HTML to plain text
+    const plainTextContent = stripHtml(content);
 
     const newBlog = {
       email: user?.email,
@@ -70,7 +81,7 @@ const Createblog = () => {
       role: userData?.role,
       title,
       thumbnail: thumbnailUrl,
-      content,
+      content: plainTextContent, // send only plain text here
       status: "draft",
       createdAt: new Date().toISOString(),
     };
@@ -86,6 +97,7 @@ const Createblog = () => {
 
       Swal.fire("Success!", "Blog created successfully!", "success");
 
+      // Clear form
       setTitle("");
       setThumbnailUrl("");
       setContent("");
