@@ -15,15 +15,15 @@ The Blood Donation Application is designed to provide a seamless platform for co
 ---
 
 ## 2. Admin Credentials  
-- **Admin Email:** admin@example.com  
-- **Admin Password:** Admin@1234  
+- **Admin Email:** shuvohowlader10@gmail.com 
+- **Admin Password:** shuvohowlader10@gmail.comS 
 
 
 
 ---
 
 ## 3. Live Site  
-[Live Site URL](https://your-live-site-url.com)  
+[Live Site URL](https://blood-donate-fdae5.web.app/)  
 
 ---
 
@@ -51,13 +51,7 @@ The Blood Donation Application is designed to provide a seamless platform for co
 
 ---
 
-## 5. Project Structure & GitHub Commits  
 
-- Minimum **20 client-side** commits made for clear version control.
-- Minimum **12 server-side** commits for backend progress tracking.
-- Meaningful commit messages describing features or bug fixes.
-
----
 
 ## 6. Resources Used  
 
@@ -66,17 +60,6 @@ The Blood Donation Application is designed to provide a seamless platform for co
 - React rich text editor: jodit-react.
 - Sweetalert2 for user notifications.
 - Stripe for payment integration.
-
----
-
-## 7. Additional Notes  
-
-- No Lorem Ipsum text used anywhere.
-- The app ensures smooth UX and accessibility with consistent UI.
-- Private routes do not redirect logged-in users back to login on page refresh.
-- Blog editing is optional but partially implemented.
-- User roles can be modified by admin via database or UI.
-- Donations are traceable by donors and admins alike.
 
 
 
