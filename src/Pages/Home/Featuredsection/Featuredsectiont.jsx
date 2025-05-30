@@ -1,5 +1,6 @@
 import React from "react";
 import { FaHandHoldingHeart, FaSyringe, FaUsers } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const initiatives = [
   {
@@ -54,12 +55,12 @@ const FeaturedSection = () => {
           ))}
         </ul>
 
-        <a
-          href="/get-involved"
+        <Link
+          to="/donationreq/all"
           className="mt-10 inline-block bg-red-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-red-700 transition transform hover:scale-105"
         >
           Become a Donor
-        </a>
+        </Link>
       </div>
 
       {/* Right Side Image */}

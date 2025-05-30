@@ -4,9 +4,11 @@ import { FaSearch } from 'react-icons/fa';
 import { MdNavigateNext } from 'react-icons/md';
 import BannerIst from '../../../assets/Banner/27577819_ravi24_may_8.jpg'
 import { FaHeartCircleCheck } from 'react-icons/fa6';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 
 const Banner = () => {
+      const navigate = useNavigate();
+
     return (
         <div className=''>
             <div
@@ -31,8 +33,12 @@ const Banner = () => {
                            </Link>
                           
                             
-                            <button className="btn bg-red-500 px-10 text-white flex font-bold font-serif py-5">Search Donors<FaSearch className='text-xl' />
-                            </button>
+                            <button 
+      onClick={() => navigate('/allsearch/donar')} 
+      className="btn bg-red-500 px-10 text-white flex font-bold font-serif py-5 items-center gap-2"
+    >
+      Search Donors <FaSearch className="text-xl" />
+    </button>
                             
                         </div>
                     </div>

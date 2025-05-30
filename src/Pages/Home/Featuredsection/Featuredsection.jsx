@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaTint, FaHandsHelping, FaHeartbeat } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const features = [
   {
@@ -46,12 +47,12 @@ const Featuredsection = () => {
         </div>
 
         <div className="mt-12 text-center">
-          <a
-            href="/get-involved"
+          <Link
+            to="/register"
             className="inline-block bg-red-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-red-700 transition-transform transform hover:scale-105"
           >
             Join the Mission
-          </a>
+          </Link>
         </div>
       </div>
     </section>
