@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import { FaSearch, FaPlus, FaTrashAlt, FaEdit, FaSyncAlt } from 'react-icons/fa';
 
-const BlogManager = () => {
+const  Contentmana = () => {
   const navigate = useNavigate();
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
@@ -219,4 +219,4 @@ const BlogManager = () => {
   );
 };
 
-export default BlogManager;
+export default Contentmana;

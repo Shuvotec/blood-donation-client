@@ -25,7 +25,6 @@ import Editcontent from "../src/Layouts/Admin/Contentmana/Editcontent/Editconten
 
 import Volunteerhome from "../src/Layouts/Volunteer/Volunteerhome/Volunteerhome";
 
-import Tests from "../src/Shared/Tests";
 import SearchPage from "../src/Pages/Home/SearchPage/SearchPage";
 import Donationreqall from "../src/Pages/Home/Donationreqall/Donationreqall";
 import Donationreqdetails
@@ -148,10 +147,6 @@ export const router = createBrowserRouter([
         element: <PrivateRoute><Volunteerhome /></PrivateRoute>,
       },
 
-      {
-        path: "t",
-        element: <PrivateRoute><Tests /></PrivateRoute>,
-      },
     ],
   },
 ]);

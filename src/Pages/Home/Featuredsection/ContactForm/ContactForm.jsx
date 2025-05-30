@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaPhoneAlt, FaEnvelope, FaCommentDots } from 'react-icons/fa';
 
-const ContactUs = () => {
+const ContactForm = () => {
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -93,4 +93,4 @@ const ContactUs = () => {
   );
 };
 
-export default ContactUs;
+export default ContactForm;
