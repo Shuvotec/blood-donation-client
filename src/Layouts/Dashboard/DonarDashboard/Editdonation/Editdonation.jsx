@@ -16,7 +16,7 @@ const Editdonation = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedUpazila, setSelectedUpazila] = useState("");
 
-  // Get donation data by ID
+  // Get 
   const { data: donationData, isLoading, error } = useQuery({
     queryKey: ["donation", id],
     enabled: !!id,
@@ -27,7 +27,7 @@ const Editdonation = () => {
     },
   });
 
-  // Fetch supporting data
+  // Fetch 
   const { data: bloodGroups = [] } = useQuery({
     queryKey: ["bloodGroups"],
     queryFn: async () => {
@@ -62,7 +62,6 @@ const Editdonation = () => {
     },
   });
 
-  // Pre-fill select values when donationData is loaded
   useEffect(() => {
     if (donationData) {
       setSelectedGroup(donationData.bloodGroup || "");
@@ -139,74 +138,7 @@ const Editdonation = () => {
 
   return (
     <div className="card-body max-w-3xl text-black mx-auto">
-      {/* <form onSubmit={formik.handleSubmit} className="space-y-4">
-        <h2 className="text-2xl font-bold text-center text-[#cfc7c7]">Edit Donation Request</h2>
-
-        <label className="label">Name</label>
-        <input className="input input-bordered w-full" name="name" value={formik.values.name} readOnly />
-
-        <label className="label">Email</label>
-        <input className="input input-bordered w-full" name="email" value={formik.values.email} readOnly />
-
-        <label className="label">Recipient Name</label>
-        <input className="input input-bordered w-full" name="recipientName" onChange={formik.handleChange} value={formik.values.recipientName} />
-        
-
-        <label className="label">Hospital Name</label>
-        <input className="input input-bordered w-full" name="hospitalName" onChange={formik.handleChange} value={formik.values.hospitalName} />
-        
-        <label className="label">Donation Date</label>
-        <input type="date" className="input input-bordered w-full" name="donationDate" onChange={formik.handleChange} value={formik.values.donationDate} />
-      
-
-        <label className="label">Donation Time</label>
-        <input type="time" className="input input-bordered w-full" name="donationTime" onChange={formik.handleChange} value={formik.values.donationTime} />
      
-
-        <label className="label">Full Address</label>
-        <input className="input input-bordered w-full" name="fullAddress" onChange={formik.handleChange} value={formik.values.fullAddress} />
-        
-
-        <label className="label">Division</label>
-        <select className="select select-bordered w-full" value={selectedDivition} onChange={(e) => { setSelectedDivition(e.target.value); setSelectedDistrict(""); setSelectedUpazila(""); }}>
-          <option disabled value="">Select Division</option>
-          {divisions.map((div, i) => <option key={i} value={div.name}>{div.name}</option>)}
-        </select>
-       
-
-        <label className="label">District</label>
-        <select className="select select-bordered w-full" value={selectedDistrict} onChange={(e) => { setSelectedDistrict(e.target.value); setSelectedUpazila(""); }} disabled={!districts.length}>
-          <option disabled value="">Select District</option>
-          {districts.map((dist, i) => <option key={i} value={dist.name}>{dist.name}</option>)}
-        </select>
-      
-        <label className="label">Upazila</label>
-              <select
-                className="select select-bordered w-full"
-                value={selectedUpazila}
-                onChange={(e) => setSelectedUpazila(e.target.value)}
-                disabled={!upazilas.length}
-                required
-              >
-                <option disabled value="">Select Upazila</option>
-                {upazilas.map((upa, i) => (
-                  <option key={i} value={upa.name || upa}>{upa.name || upa}</option>
-                ))}
-              </select>
-          
-
-        <label className="label">Blood Group</label>
-        <select className="select select-bordered w-full" value={selectedGroup} onChange={(e) => setSelectedGroup(e.target.value)}>
-          <option disabled value="">Select Blood Group</option>
-          {bloodGroups.map((group, i) => <option key={i} value={group.group}>{group.group}</option>)}
-        </select>
-        
-
-        <label className="label">Request Message</label>
-        <textarea className="textarea textarea-bordered w-full" name="requestMessage" onChange={formik.handleChange} value={formik.values.requestMessage}></textarea>
-
-        <button type="submit" className="btn bg-[#772c48] hover:bg-[#bc2356] text-white w-full">Update Donation Request</button>
-      </form> */}
          <form onSubmit={formik.handleSubmit} className="space-y-4">
         <h2 className="text-2xl font-bold text-center text-[#f0ecee]">Edit Donation Request</h2>
 
@@ -280,7 +212,7 @@ const Editdonation = () => {
         <button type="submit" className="btn bg-[#772c48] hover:bg-[#bc2356] text-white w-full">Update Donation Request</button>
       </form>
           <button
-          onClick={() => navigate(-1)} // Navigates back to the previous page
+          onClick={() => navigate(-1)}
           className="text-white w-full mb-6 p-2 bg-[#8e3757] rounded-md hover:bg-[#bc2356] transition duration-300"
         >
           &larr; Go Back

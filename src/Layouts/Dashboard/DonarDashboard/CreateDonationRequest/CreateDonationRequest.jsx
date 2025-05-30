@@ -17,7 +17,7 @@ const CreateDonationRequest = () => {
   const { user } = useContext(AuthContext);
   const { email } = user;
 
-  // Fetch user info
+  // Fetch
   const { data: userData, isLoading } = useQuery({
     queryKey: ["user", email],
     queryFn: async () => {
@@ -83,7 +83,6 @@ const CreateDonationRequest = () => {
     validate: (values) => {
       const errors = {};
 
-      // Check if the required fields are empty
       if (!values.recipientName) {
         errors.recipientName = "Recipient name is required";
       }
@@ -155,7 +154,7 @@ const CreateDonationRequest = () => {
             text: `Welcome, ${formPayload.name}!`,
           });
 
-          // Reset formik and states
+          
           resetForm();
           setSelectedGroup("");
           setSelectedDivition("");

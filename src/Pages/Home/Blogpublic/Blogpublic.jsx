@@ -14,7 +14,6 @@ const BlogList = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Filter blogs by search term (optional)
   const filteredBlogs = blogs.filter(blog =>
     blog.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -26,7 +25,7 @@ const BlogList = () => {
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-4xl font-bold mb-6 text-center">Published Blogs</h1>
 
-      {/* Optional Search */}
+    
       <div className="mb-6 flex justify-center">
         <input
           type="text"

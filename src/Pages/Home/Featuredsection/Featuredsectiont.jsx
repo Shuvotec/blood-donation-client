@@ -1,5 +1,5 @@
 import React from "react";
-import { FaHandHoldingHeart, FaSyringe, FaUsers } from "react-icons/fa";
+import { FaHandHoldingHeart, FaHeart, FaSyringe, FaUsers } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const initiatives = [
@@ -26,7 +26,6 @@ const initiatives = [
 const FeaturedSection = () => {
   return (
     <section className="flex flex-col md:flex-row max-w-6xl mx-auto my-16 px-6">
-      {/* Left Side Content */}
       <div className="md:w-1/2 flex flex-col justify-center pr-10">
         <h2 className="text-4xl font-extrabold text-red-600 mb-6 animate-slideInLeft">
            Why Donate Blood with Us?
@@ -63,12 +62,14 @@ const FeaturedSection = () => {
         </Link>
       </div>
 
-      {/* Right Side Image */}
+
       <div className="md:w-1/2 mt-10 md:mt-0 flex justify-center items-center animate-fadeInRight">
-        {/* Replace the below div with an <img> or SVG illustration */}
+     
+        
         <div className="w-full max-w-md h-72 bg-red-100 rounded-xl shadow-lg flex items-center justify-center text-red-400 text-9xl select-none">
-          ❤️
-        </div>
+  <FaHeart />
+</div>
+
       </div>
     </section>
   );

@@ -6,9 +6,8 @@ import { IoIosWarning } from 'react-icons/io';
 
 const Donationdetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // Hook for navigating back
+  const navigate = useNavigate(); 
 
-  // Get donation data by ID
   const { data: donationData, isLoading, error } = useQuery({
     queryKey: ["donation", id],
     enabled: !!id,
@@ -48,7 +47,6 @@ const Donationdetails = () => {
         <h2 className="text-3xl font-bold text-center text-[#9f345b] mb-8">Donation Details</h2>
         
         <div className="space-y-6">
-          {/* Donation Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex justify-between text-lg font-medium">
               <span className="text-[#9f345b] flex items-center"><FaUser className="mr-2" /> Name:</span>
@@ -76,7 +74,6 @@ const Donationdetails = () => {
             </div>
           </div>
 
-          {/* Address & Location Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex justify-between text-lg font-medium">
               <span className="text-[#9f345b] flex items-center"><FaMapMarkerAlt className="mr-2" /> Full Address:</span>
@@ -96,7 +93,6 @@ const Donationdetails = () => {
             </div>
           </div>
 
-          {/* Request & Status Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex justify-between text-lg font-medium">
               <span className="text-[#9f345b] flex items-center"><FaCalendarAlt className="mr-2" /> Created At:</span>
@@ -108,7 +104,6 @@ const Donationdetails = () => {
             </div>
             
           </div>
-          {/* request message */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex justify-between text-lg font-medium">
            <span className="text-[#9f345b] flex items-center"><FaRegEnvelope className="mr-2" /> Request Message:</span>
@@ -122,7 +117,7 @@ const Donationdetails = () => {
           </div>
 
                   <button
-          onClick={() => navigate(-1)} // Navigates back to the previous page
+          onClick={() => navigate(-1)} 
           className="text-white w-full mb-6 p-2 bg-[#9f345b] rounded-md hover:bg-[#bc2356] transition duration-300"
         >
           &larr; Go Back

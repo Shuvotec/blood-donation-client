@@ -46,7 +46,7 @@ const SearchPage = () => {
     },
   });
 
-  // Fetch districts (depends on division)
+  // Fetch districts 
   const { data: districts = [] } = useQuery({
     queryKey: ['districts', selectedDivision],
     enabled: !!selectedDivision,
@@ -56,7 +56,7 @@ const SearchPage = () => {
     },
   });
 
-  // Fetch upazilas (depends on district)
+  // Fetch upazilas
   const { data: upazilas = [] } = useQuery({
     queryKey: ['upazilas', selectedDistrict],
     enabled: !!selectedDistrict,
@@ -66,7 +66,7 @@ const SearchPage = () => {
     },
   });
 
-  // Show all active donors by default when users data loads
+ 
   useEffect(() => {
     if (users.length > 0) {
       const activeUsers = users.filter(user => user.status === 'active');
@@ -101,7 +101,6 @@ const SearchPage = () => {
     <div className="max-w-5xl mx-auto px-6 py-8">
       <h2 className="text-3xl font-bold mb-8 text-center">Search Blood Donors</h2>
 
-      {/* Search Form */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
         {/* Blood Group */}
         <select
@@ -169,7 +168,6 @@ const SearchPage = () => {
         </select>
       </div>
 
-      {/* Search Button */}
       <div className="text-center mb-10">
         <button
           className="bg-blue-600 text-white px-8 py-3 rounded-lg shadow hover:bg-blue-700 transition"
@@ -179,7 +177,6 @@ const SearchPage = () => {
         </button>
       </div>
 
-      {/* Donor Results */}
       <div>
         <h3 className="text-2xl font-semibold mb-6 text-center">Results</h3>
         {filteredDonors.length > 0 ? (
@@ -215,7 +212,6 @@ const SearchPage = () => {
         )}
       </div>
 
-      {/* Donor Details Modal */}
       {selectedDonor && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative animate-fadeIn">
@@ -247,7 +243,6 @@ const SearchPage = () => {
         </div>
       )}
 
-      {/* Modal animation */}
       <style>{`
         @keyframes fadeIn {
           from {opacity: 0; transform: scale(0.95);}

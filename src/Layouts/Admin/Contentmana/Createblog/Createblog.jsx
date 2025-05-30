@@ -29,7 +29,6 @@ const Createblog = () => {
     enabled: !!email,
   });
 
-  // Helper function to strip HTML tags and get plain text
   function stripHtml(html) {
     const tmp = document.createElement("DIV");
     tmp.innerHTML = html;
@@ -71,7 +70,7 @@ const Createblog = () => {
       return;
     }
 
-    // Convert content HTML to plain text
+ 
     const plainTextContent = stripHtml(content);
 
     const newBlog = {
@@ -81,7 +80,7 @@ const Createblog = () => {
       role: userData?.role,
       title,
       thumbnail: thumbnailUrl,
-      content: plainTextContent, // send only plain text here
+      content: plainTextContent, 
       status: "draft",
       createdAt: new Date().toISOString(),
     };
@@ -97,7 +96,7 @@ const Createblog = () => {
 
       Swal.fire("Success!", "Blog created successfully!", "success");
 
-      // Clear form
+     
       setTitle("");
       setThumbnailUrl("");
       setContent("");
@@ -109,7 +108,6 @@ const Createblog = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-100 via-white to-red-50 px-4 py-10 flex justify-center items-center">
       <div className="w-full max-w-5xl bg-white bg-opacity-90 backdrop-blur-sm p-10 sm:p-12 rounded-3xl shadow-xl border border-rose-200">
-        {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
           className="mb-6 inline-flex items-center gap-2 text-red-600 font-semibold hover:text-red-800 transition"
@@ -118,7 +116,6 @@ const Createblog = () => {
           Back
         </button>
 
-        {/* Header */}
         <div className="flex items-center mb-10 gap-3">
           <FaBlog size={32} className="text-red-600" />
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">
@@ -126,9 +123,7 @@ const Createblog = () => {
           </h1>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Title */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2 text-lg">
               Blog Title
@@ -143,7 +138,6 @@ const Createblog = () => {
             />
           </div>
 
-          {/* Thumbnail Upload */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2 text-lg">
               Thumbnail Image
@@ -174,7 +168,6 @@ const Createblog = () => {
             )}
           </div>
 
-          {/* Content */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2 text-lg">
               Blog Content
@@ -188,7 +181,6 @@ const Createblog = () => {
             />
           </div>
 
-          {/* Submit */}
           <div>
             <button
               type="submit"

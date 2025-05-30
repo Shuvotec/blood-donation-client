@@ -27,7 +27,7 @@ const ContactUs = () => {
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Contact Form */}
+   
         <form onSubmit={handleSubmit} className="space-y-5">
           <input
             type="text"
@@ -73,7 +73,7 @@ const ContactUs = () => {
           </button>
         </form>
 
-        {/* Contact Info */}
+   
         <div className="flex flex-col justify-center gap-6 text-lg text-gray-700">
           <div className="flex items-center gap-4">
             <FaPhoneAlt className="text-red-600 text-xl" />

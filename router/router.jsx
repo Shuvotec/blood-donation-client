@@ -16,7 +16,6 @@ import Editdonation from "../src/Layouts/Dashboard/DonarDashboard/Editdonation/E
 import Donationdetails from "../src/Layouts/Dashboard/DonarDashboard/Donationdetails/Donationdetails";
 import Allsearch from "../src/Pages/Allsearch/Allsearch";
 
-// Admin Pages
 import Adminhome from "../src/Layouts/Admin/Adminhome/Adminhome";
 import AllUser from "../src/Layouts/Admin/AllUser/AllUser";
 import MyDonationreq from "../src/Layouts/Admin/MyDonationreq/MyDonationreq";
@@ -24,10 +23,8 @@ import Contentmana from "../src/Layouts/Admin/Contentmana/Contentmana";
 import Createblog from "../src/Layouts/Admin/Contentmana/Createblog/Createblog";
 import Editcontent from "../src/Layouts/Admin/Contentmana/Editcontent/Editcontent";
 
-// Volunteer
 import Volunteerhome from "../src/Layouts/Volunteer/Volunteerhome/Volunteerhome";
 
-// Others
 import Tests from "../src/Shared/Tests";
 import SearchPage from "../src/Pages/Home/SearchPage/SearchPage";
 import Donationreqall from "../src/Pages/Home/Donationreqall/Donationreqall";

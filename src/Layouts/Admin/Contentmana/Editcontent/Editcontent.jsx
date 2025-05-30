@@ -4,7 +4,6 @@ import JoditEditor from 'jodit-react';
 import Swal from 'sweetalert2';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-// React Icons
 import { FaEdit, FaSave, FaTimes, FaImage, FaCheckCircle, FaClock } from 'react-icons/fa';
 
 const image_hosting_Key = import.meta.env.VITE_IMAGE_HOSTING_KEY;

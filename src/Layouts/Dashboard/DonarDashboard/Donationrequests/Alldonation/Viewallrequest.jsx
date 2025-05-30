@@ -37,7 +37,7 @@ const Viewallrequest = () => {
       });
 
       if (!res.ok) throw new Error('Failed to update donation status');
-      refetch(); // Refresh data
+      refetch(); 
     } catch (error) {
       console.error('Error updating status:', error);
     }
@@ -50,7 +50,7 @@ const Viewallrequest = () => {
       });
 
       if (!res.ok) throw new Error('Failed to delete donation request');
-      refetch(); // Refresh after deletion
+      refetch(); 
     } catch (error) {
       console.error('Error deleting donation request:', error);
     } finally {
@@ -134,7 +134,6 @@ const Viewallrequest = () => {
             </tbody>
           </table>
 
-          {/* Toggle View All / Less */}
           {donationRequests.length > 3 && (
             <div className="mt-4 text-center">
               <button
@@ -152,7 +151,6 @@ const Viewallrequest = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded shadow-md">

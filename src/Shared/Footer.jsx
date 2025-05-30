@@ -38,7 +38,7 @@ const Footer = () => {
       className="bg-red-700 text-white select-none"
     >
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-8 p-8">
-        {/* Brand */}
+       
         <div>
           <div className="flex items-center gap-4 mb-4">
             <FaHeartbeat className="text-red-300 text-6xl" />
@@ -54,7 +54,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Quick Links */}
         <div>
           <h3 className="font-semibold text-2xl mb-6">Quick Links</h3>
           <ul className="space-y-3">
@@ -79,7 +78,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Dashboard Links */}
         <div>
           <h3 className="font-semibold text-2xl mb-6">Dashboard</h3>
           <ul className="space-y-3">
@@ -103,7 +101,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Contact */}
         <div>
           <h3 className="font-semibold text-2xl mb-6">Contact Us</h3>
           <ul className="space-y-6 text-red-200 text-sm">
@@ -122,7 +119,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Social Media */}
         <div>
           <h3 className="font-semibold text-2xl mb-6">Follow Us</h3>
           <div className="flex gap-6 text-red-300 text-3xl">

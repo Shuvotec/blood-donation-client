@@ -17,7 +17,7 @@ const Donationreqall = () => {
     },
   });
 
-  // Filter only pending requests
+  
   const pendingDonations = donations.filter(donation => donation.status === 'pending');
 
   const handleView = (id) => {
