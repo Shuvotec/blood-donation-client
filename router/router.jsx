@@ -35,12 +35,13 @@ import Donationreqdetails
  from "../src/Pages/Home/Donationreqall/Donationreqdetails/Donationreqdetails";
 import Blogpublic from "../src/Pages/Home/Blogpublic/Blogpublic";
 import Blogdetails from "../src/Pages/Home/Blogpublic/Blogdetails/Blogdetails";
+import ErrorPage from "../src/Pages/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    errorElement: <h2>Error Page</h2>,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",

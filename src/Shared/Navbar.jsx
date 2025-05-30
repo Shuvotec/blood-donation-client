@@ -20,9 +20,7 @@ const Navbar = () => {
       <li className='text-xl font-bold font-serif'>
         <Link to="/">Home</Link>
       </li>
-      <li className='text-xl font-bold font-serif'>
-        <Link to="p">Donation Requests</Link>
-      </li>
+      
       <li className='text-xl font-bold font-serif'>
         <Link to="donationreq/all">Donation Requests</Link>
       </li>
